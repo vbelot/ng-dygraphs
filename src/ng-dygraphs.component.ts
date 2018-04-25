@@ -25,7 +25,7 @@ export class NgDygraphsComponent implements OnInit, OnChanges {
   public chartHeight: number;
   public labels: string[];
 
-  private _g: any;
+  public dygraph: any;
 
   public ngOnInit() {
     this.noDataLabel =  this.noDataLabel  || 'NO DATA AVAILABLE';
@@ -71,7 +71,7 @@ export class NgDygraphsComponent implements OnInit, OnChanges {
     if (options.labels) { options.visibility = initialVisibility; }
 
     setTimeout(() => {
-      this._g = new Dygraph(this.chart.nativeElement,
+      this.dygraph = new Dygraph(this.chart.nativeElement,
         this.data,
         options
       );
@@ -81,6 +81,6 @@ export class NgDygraphsComponent implements OnInit, OnChanges {
 
   public changeVisibility(el: any) {
     const elem = el.currentTarget;
-    this._g.setVisibility(parseInt(elem.id, 10), elem.checked);
+    this.dygraph.setVisibility(parseInt(elem.id, 10), elem.checked);
   }
 }
