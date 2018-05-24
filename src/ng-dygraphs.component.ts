@@ -76,11 +76,32 @@ export class NgDygraphsComponent implements OnInit, OnChanges {
         options
       );
       this.loadingInProgress = false;
+      this.dygraph.ready(graph => {
+        this.watchRangeSelector(graph);
+      });
     }, 500);
   }
 
   public changeVisibility(el: any) {
     const elem = el.currentTarget;
     this.dygraph.setVisibility(parseInt(elem.id, 10), elem.checked);
+  }
+
+  private watchRangeSelector(graph) {
+    const observer = new MutationObserver(function (mutations) { // called on style changes of range selector handles
+      if (mutations.length === 2) { // both range selector handles have style changed -> assume move
+        // Zoom to the same zoom to trigger zoomCallback
+        const zoomCallback = graph.getFunctionOption('zoomCallback');
+        const [minX, maxX] = graph.xAxisRange();
+        zoomCallback.call(graph, minX, maxX, graph.yAxisRanges());
+      }
+    });
+    Array.from(document.getElementsByClassName('dygraph-rangesel-zoomhandle')).forEach(
+      // work on range selector handles
+      function (element, idx, arr) {
+        // watch for style changes
+        observer.observe(element, { attributes: true, attributeFilter: ['style'] });
+      }
+    );
   }
 }
