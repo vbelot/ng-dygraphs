@@ -16,7 +16,6 @@ declare const Dygraph: any;
 export class NgDygraphsComponent implements OnInit, OnChanges {
   @Input() public options: DygraphOptions;
   @Input() public data: any;
-  @Input() public customVisibility: boolean;
   @Input() public noDataLabel: string;
   @ViewChild('chart') public chart: ElementRef;
 
@@ -57,19 +56,6 @@ export class NgDygraphsComponent implements OnInit, OnChanges {
     if (!options.height) { options.height = this.chartHeight; }
     if (!options.legend) { options.legend = 'always'; }
 
-    const initialVisibility: boolean[] = [];
-    if (options.labels) {
-      if (this.customVisibility && options.labels.length > 1) {
-        // options.labels[0] is always X axis
-        this.labels = options.labels.slice(1);
-      }
-
-      options.labels.forEach((_) => {
-        initialVisibility.push(true);
-      });
-    }
-    if (options.labels) { options.visibility = initialVisibility; }
-
     setTimeout(() => {
       this.dygraph = new Dygraph(this.chart.nativeElement,
         this.data,
@@ -82,9 +68,8 @@ export class NgDygraphsComponent implements OnInit, OnChanges {
     }, 500);
   }
 
-  public changeVisibility(el: any) {
-    const elem = el.currentTarget;
-    this.dygraph.setVisibility(parseInt(elem.id, 10), elem.checked);
+  public changeVisibility(index, value) {
+    this.dygraph.setVisibility(index, value);
   }
 
   private watchRangeSelector(graph) {

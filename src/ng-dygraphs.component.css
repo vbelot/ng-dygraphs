@@ -9,13 +9,6 @@
             flex-direction: row;
     padding-right: 30px;
     padding-left: 30px; }
-    .ng-dygraphs .name-nodes-holder .checkbox {
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-flex-grow: 1;
-          -ms-flex-positive: 1;
-              flex-grow: 1; }
   .ng-dygraphs .ng-dygraphs-chart-container {
     background-color: #fff;
     padding: 0;
